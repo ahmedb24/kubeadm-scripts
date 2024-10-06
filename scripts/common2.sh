@@ -15,8 +15,8 @@ CNI_PLUGIN_VERSION="1.5.1"
 sudo swapoff -a
 
 # Keeps the swap off during reboot
+sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 (crontab -l 2>/dev/null; echo "@reboot sudo /sbin/swapoff -a") | crontab - || true
-sudo apt-get update -y
 
 # Create the .conf file to load the modules at bootup
 cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf

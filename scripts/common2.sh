@@ -95,5 +95,8 @@ local_ip="$(ip --json addr show eth0 | jq -r '.[0].addr_info[] | select(.family 
 # Write the local IP address to the kubelet default configuration file
 echo KUBELET_EXTRA_ARGS=--node-ip=$local_ip | sudo tee /etc/default/kubelet
 
+# Reboot system
+sudo reboot
+
 # Enable the kubelet service before running kubeadm:
 sudo systemctl enable --now kubelet

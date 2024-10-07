@@ -100,3 +100,7 @@ sudo reboot
 
 # Enable the kubelet service before running kubeadm:
 sudo systemctl enable --now kubelet
+
+# Restart kubelet and containerd
+sudo systemctl restart kubelet
+sudo systemctl restart containerd

@@ -11,6 +11,8 @@ PUBLIC_IP_ACCESS="false"
 NODENAME=$(hostname -s)
 POD_CIDR="192.168.0.0/16"
 CALICO_VERSION="3.28.2"
+LB_ADDRESS="10.10.5.29"
+LB_PORT="6443"
 
 # Pull required images
 
@@ -21,7 +23,10 @@ sudo kubeadm config images pull
 if [[ "$PUBLIC_IP_ACCESS" == "false" ]]; then
     
     MASTER_PRIVATE_IP=$(ip addr show eth0 | awk '/inet / {print $2}' | cut -d/ -f1)
+    # For Master Loadbalancer, uncomemnt and use this below
+    # sudo kubeadm init --control-plane-endpoint "LB_ADDRESS:LB_PORT" --upload-certs --pod-network-cidr="$POD_CIDR" --node-name "$NODENAME"
     sudo kubeadm init --apiserver-advertise-address="$MASTER_PRIVATE_IP" --pod-network-cidr="$POD_CIDR" --node-name "$NODENAME"
+    
     
 elif [[ "$PUBLIC_IP_ACCESS" == "true" ]]; then
 

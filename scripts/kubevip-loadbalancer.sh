@@ -21,3 +21,11 @@ kube-vip manifest pod \
     --controlplane \
     --arp \
     --leaderElection | sudo tee /etc/kubernetes/manifests/kube-vip.yaml
+
+# This fixes permission issue faced by kube-vip during initialisation (https://github.com/kube-vip/kube-vip/issues/684)
+#command pre-kubeadm:
+sed -i 's#path: /etc/kubernetes/admin.conf#path: /etc/kubernetes/super-admin.conf#' \
+          /etc/kubernetes/manifests/kube-vip.yaml
+#command post-kubeadm:
+sed -i 's#path: /etc/kubernetes/super-admin.conf#path: /etc/kubernetes/admin.conf#' \
+          /etc/kubernetes/manifests/kube-vip.yaml
